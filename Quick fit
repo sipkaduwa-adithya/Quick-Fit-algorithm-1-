@@ -1,0 +1,73 @@
+# Import necessary libraries
+from typing import List
+
+# Input Handling Module
+def get_inputs():
+    
+    Accepts memory block and process sizes as inputs.
+    Returns:
+        memory_blocks (List[int]): List of memory block sizes.
+        processes (List[int]): List of process sizes.
+   
+    memory_blocks = [200, 300, 400, 100, 150]
+    processes = [120, 250, 50]
+    return memory_blocks, processes
+
+# Quick Fit Allocation Module
+def quick_fit_allocation(memory_blocks: List[int], processes: List[int]):
+    """
+    Allocates processes to memory blocks using the Quick Fit algorithm.
+    Args:
+        memory_blocks (List[int]): List of memory block sizes.
+        processes (List[int]): List of process sizes.
+    Returns:
+        allocation (List[int]): List of allocated memory blocks for each process.
+    
+    allocation = [-1] * len(processes)  # -1 indicates unallocated process
+
+    for i in range(len(processes)):
+        # Find the smallest block that fits the process
+        best_fit_index = -1
+        for j in range(len(memory_blocks)):
+            if memory_blocks[j] >= processes[i]:
+                if best_fit_index == -1 or memory_blocks[j] < memory_blocks[best_fit_index]:
+                    best_fit_index = j
+        
+        # Allocate the process if a suitable block is found
+        if best_fit_index != -1:
+            allocation[i] = best_fit_index
+            memory_blocks[best_fit_index] -= processes[i]
+    
+    return allocation, memory_blocks
+
+# Output Display Module
+def display_allocation(processes: List[int], allocation: List[int], memory_blocks: List[int]):
+    """
+    Displays the allocation results and remaining memory blocks.
+    Args:
+        processes (List[int]): List of process sizes.
+        allocation (List[int]): List of allocated memory blocks.
+        memory_blocks (List[int]): Updated list of memory block sizes.
+    
+    print("Process Allocation Results:")
+    for i in range(len(processes)):
+        if allocation[i] != -1:
+            print(f"Process {i+1} (Size: {processes[i]}) -> Block {allocation[i]+1}")
+        else:
+            print(f"Process {i+1} (Size: {processes[i]}) -> Not Allocated")
+    
+    print("\nRemaining Memory Blocks:")
+    for i, size in enumerate(memory_blocks):
+        print(f"Block {i+1}: {size} units")
+
+# Main Function
+def main():
+    
+    Main function to execute the Quick Fit algorithm.
+   
+    memory_blocks, processes = get_inputs()
+    allocation, updated_memory_blocks = quick_fit_allocation(memory_blocks, processes)
+    display_allocation(processes, allocation, updated_memory_blocks)
+# Run the program
+if __name__ == "__main__":
+    main()
